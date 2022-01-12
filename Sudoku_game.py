@@ -1,8 +1,34 @@
+def pre_board(level):
+    # input: level of the board
+    # output: board(9X9)
+    if level == 2:
+        board = [['.',8 ,'.','.','.','.','.','.','.'],\
+        ['.',2 ,'.',1 ,'.','.','.','.','.'],\
+        [5 ,6 ,'.','.','.',7 ,'.','.','.'],\
+        ['.',5 ,'.','.','.',7 ,'.',9 ,'.'],\
+        ['.',9 ,'.',8 ,'.','.','.',1 ,'.'],\
+        [4 ,'.',8 ,'.','.',3 ,'.',5 ,'.'],\
+        [2 ,'.',4 ,'.',6 ,'.','.','.','.'],\
+        ['.','.','.','.',8 ,5 ,2 ,'.','.'],\
+        [8 ,'.','.','.','.','.',1 ,'.','.']]
+    
+    else:
+        board = [[9 ,'.','.',4 ,3 ,7,'.','.',5 ],\
+        [3 ,'.','.',8 ,'.','.','.',2 ,'.'],\
+        ['.',7 ,1 ,2 ,5 ,'.','.',4 ,9 ],\
+        ['.',5 ,8 ,7 ,'.','.',2 ,9 ,'.'],\
+        [4 ,'.',9 ,1 ,'.','.','.',3 ,'.'],\
+        ['.',3 ,'.','.' ,9 ,8,'.','.',4],\
+        ['.',8 ,'.',3 ,'.',4 ,1 ,'.','.'],\
+        ['.',1 ,3 ,6 ,8 ,7 ,2 ,5 ,'.'],\
+        ['.','.','.','.','.','.','.','.','.']]
+
+    return (board)
 
 def create_board():
-    # input: non
+    # input: False + None or True + pre_board
     # output: board(9X9)
-
+    
     ########## create a board ##########    
     board = [['.','.','.','.','.','.','.','.','.'],\
     ['.','.','.','.','.','.','.','.','.'],\
@@ -15,10 +41,7 @@ def create_board():
     ['.','.','.','.','.','.','.','.','.']]
 
     ########## explaination of the interface ##########   
-    print(
-        "\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" 
-        "\t\t\t\tWelcome to the Sudoku play!\n" 
-        "\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"     
+    print(    
         "In order to start, please fill the clues which has been given to you in the following format:\n\n"
         "(BOX, CELL in box, VALUE of the clue)\n\n"
         "Use this illustration:\n"
@@ -117,7 +140,26 @@ def valid(board):
 # def draft():
     
 if __name__ == "__main__":
-    board = change_board(create_board())
+    print(
+        "\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" 
+        "\t\t\t\tWelcome to the Sudoku play!\n" 
+        "\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n")    
+    choose = input(print("Do you want to choose a pre board table? y = Yes, n = No")) 
+    if choose == 'y': 
+        level = input(print("Choose a level: 1 = easy / 2 = hard"))
+        board = pre_board(level)
+        visual(board) 
+    else:
+        board = create_board()
+        visual(board)
+
+    change = input(print("Do you want to change the board"))
+
+
+
+
+         
+    board = create_board()
     visual(board)
     mis, mis_loc = valid(board)
     print(mis, mis_loc)
