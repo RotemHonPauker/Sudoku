@@ -1,7 +1,7 @@
 def pre_board(level):
     # input: level of the board
     # output: board(9X9)
-    if level == 2:
+    if level == '2':
         board = [['.',8 ,'.','.','.','.','.','.','.'],\
         ['.',2 ,'.',1 ,'.','.','.','.','.'],\
         [5 ,6 ,'.','.','.',7 ,'.','.','.'],\
@@ -39,10 +39,15 @@ def create_board():
     ['.','.','.','.','.','.','.','.','.'],\
     ['.','.','.','.','.','.','.','.','.'],\
     ['.','.','.','.','.','.','.','.','.']]
+ 
+    return(board)
 
+def exp_fill():
+    # input: None
+    # output: print
     ########## explaination of the interface ##########   
     print(    
-        "In order to start, please fill the clues which has been given to you in the following format:\n\n"
+        "Fill the board in the following format:\n\n"
         "(BOX, CELL in box, VALUE of the clue)\n\n"
         "Use this illustration:\n"
         "\t -------------\n \
@@ -52,29 +57,33 @@ def create_board():
         -------------\n \
         | 7 | 8 | 9 |\n \
         -------------")
-    
-    return(board)
 
 def change_board(board):
     # input: board(9X9)
     # output: changed board(9X9)
-
+    
     ########## ask the player to enter the board ##########  
-    (box, cell, value) = input('Fill:   #BOX --space-- #CELL --space-- #VALUE --enter--  ').split()
-    board[int(box)-1][int(cell)-1] = int(value)
-    print("Contiue to add your clues. When you finish, please fill: - - -")
-    while box != '-':
-        (box, cell, value) = input('Fill:   #BOX --space-- #CELL --space-- #VALUE --enter--  ').split()
-        if box == '-':
-            break
-        board[int(box)-1][int(cell)-1] = int(value)
+    ent = input('Fill:   #BOX --space-- #CELL --space-- #VALUE  ')
+    while len(ent) != 0:
+        if len(ent.split()) == 3:
+            st = ent.split()
+            if all([i.isnumeric() for i in st]):
+                if all([int(j)>0 and int(j)<10 for j in st[0:2]]):
+                    (box, cell, value) = ent.split()
+                    board[int(box)-1][int(cell)-1] = int(value)
+                    print("Please fill again. When you finish, please press ENTER")
+                    ent = input('Fill:   #BOX --space-- #CELL --space-- #VALUE  ')
+                    continue    
+        
+        print("Error! Please fill again. When you finish, please press ENTER")
+        ent = input('Fill:   #BOX --space-- #CELL --space-- #VALUE  ')
     
     return(board)
     
 def visual(board):
     # input: board(9X9)
-    # output: non
-
+    # output: print
+    print("\n")
     ########## visualization of the board ##########   
     for i in range (3):
         for j in range(3):
@@ -135,32 +144,74 @@ def valid(board):
                         else:
                             his[ board[box][c] ] = [(box,c,board[box][c])]
     return True, ()
-# def mistake_inf(board):
-
-# def draft():
     
 if __name__ == "__main__":
+    ############################## Initialization ###############################
+    # Welcome:
     print(
-        "\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" 
-        "\t\t\t\tWelcome to the Sudoku play!\n" 
-        "\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n")    
-    choose = input(print("Do you want to choose a pre board table? y = Yes, n = No")) 
+        "\n\n\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" 
+        "\t\tWelcome to the Sudoku play!\n" 
+        "\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n")    
+    
+    # Choose wether to use a pre board or create a new one:
+    choose = input("Do you want to choose a pre board table? y = Yes , n = No  ")
+    # Input check: 
+    while choose not in "yn" or choose == '':
+        choose = input("Please choose again: y = Yes , n = No  ")
+    
     if choose == 'y': 
-        level = input(print("Choose a level: 1 = easy / 2 = hard"))
+        # Choose the level of pre board:
+        level = input("Choose a level: 1 = easy , 2 = hard  ")
+        # Input check: 
+        while level not in "12" or level == '':
+            level = input("Please choose again:  1 = easy , 2 = hard  ")
+
         board = pre_board(level)
         visual(board) 
     else:
+        # Create a new board:
         board = create_board()
         visual(board)
+        print("In order to start, please fill the clues which has been given to you.")
+        exp_fill()
+        board = change_board(board)
+        visual(board)
 
-    change = input(print("Do you want to change the board"))
+    # Change the board:
+    change = input("Do you want to change the board? y = Yes , n = No  ")
 
+    while change != 'n': 
+        # Input check:
+        while change not in "yn" or change == '':
+            change = input("Please choose again: y = Yes , n = No  ")
+        
+        if change == 'y':    
+            board = change_board(board)
+            visual(board)
+            change = input("Do you want to change the board? y = Yes , n = No  ")
 
+    ############################## Start to play! ###############################
+    print(       
+        "\n\n\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" 
+        "\t\tNow we are ready! Let's Play!\n" 
+        "\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n")  
+    exp_fill()
+    print("Whenever your fill is not valid, we let you know\n")
+    exit = 'n'
+    while exit == 'n':
+        v, pos = valid(board)
+        if not(v):
+            pos1 = list(pos[0][0:2])
+            pos2 = list(pos[1][0:2])
+            for j in range(2):
+                pos1[j] += 1
+                pos2[j] += 1
+            print("Error in positions: [box,cell]={} , [box,cell]={}".format(pos1, pos2))
+        
+        board = change_board(board)
+        visual(board)
+        exit = input("Do you want to exit? y = Yes , n = No  ")
+        while exit not in "yn" or level == '':
+            exit = input("Please choose again: y = Yes , n = No  ")
 
-
-         
-    board = create_board()
-    visual(board)
-    mis, mis_loc = valid(board)
-    print(mis, mis_loc)
-    #draft()
+    
