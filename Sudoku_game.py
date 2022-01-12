@@ -103,7 +103,7 @@ def valid(board):
     # input: board(9X9)
     # output: tuple(Logic, [(Box, Cell, Value), (Box, Cell, Value)])
     
-    ########## check duplication in the column ##########
+    ########## check duplication in the box ##########
     for box in range(9):
         his = {}
         for c in range(9):
