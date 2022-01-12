@@ -26,8 +26,8 @@ def pre_board(level):
     return (board)
 
 def create_board():
-    # input: False + None or True + pre_board
-    # output: board(9X9)
+    # input: None
+    # output: empty board(9X9)
     
     ########## create a board ##########    
     board = [['.','.','.','.','.','.','.','.','.'],\
@@ -199,6 +199,7 @@ if __name__ == "__main__":
     print("Whenever your fill is not valid, we let you know\n")
     exit = 'n'
     while exit == 'n':
+        # check duplication in box & row & col:
         v, pos = valid(board)
         if not(v):
             pos1 = list(pos[0][0:2])
@@ -207,10 +208,10 @@ if __name__ == "__main__":
                 pos1[j] += 1
                 pos2[j] += 1
             print("Error in positions: [box,cell]={} , [box,cell]={}".format(pos1, pos2))
-        
         board = change_board(board)
         visual(board)
         exit = input("Do you want to exit? y = Yes , n = No  ")
+        # Input check:
         while exit not in "yn" or level == '':
             exit = input("Please choose again: y = Yes , n = No  ")
 
